@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: jwt-configuration
+
+jwt:
+  token:
+    accessTokenExpiredTime: ${ACCESS_EXPIRED_TIME}
+    refreshTokenExpiredTime: ${REFRESH_EXPIRED_TIME}
+    keystore:
+      classpath: ${KEY_NAME}
+      password: ${KEYSTORE_PASSWORD}
+    key:
+      alias: ${KEY_ALIAS}
+      privateKeyPassPhrase: ${PRIVATE_KEY_PASS_PHRASE}
