@@ -12,8 +12,8 @@ plugins{
 
 dependencies{
     //JPA
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    api("org.springframework.boot:spring-boot-starter-data-jpa")
+    api("org.springframework.boot:spring-boot-starter-validation")
 
     //Dev Database - Mysql
     runtimeOnly("com.h2database:h2")
@@ -25,4 +25,6 @@ dependencies{
     implementation("com.oracle.database.security:oraclepki")
     implementation ("com.oracle.database.security:osdt_core")
     implementation ("com.oracle.database.security:osdt_cert")
+    //Include Hateoas
+    api("org.springframework.hateoas:spring-hateoas")
 }
