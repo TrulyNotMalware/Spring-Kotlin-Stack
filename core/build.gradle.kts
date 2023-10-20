@@ -1,10 +1,11 @@
-tasks.getByName("bootJar"){
-    enabled = false
-}
+import org.gradle.api.tasks.bundling.Jar
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-tasks.getByName("jar"){
-    enabled = false
-}
+val jar: Jar by tasks
+val bootJar: BootJar by tasks
+
+jar.enabled = true
+bootJar.enabled = false
 
 plugins{
     kotlin("plugin.jpa") version "1.9.10"

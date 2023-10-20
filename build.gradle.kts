@@ -8,9 +8,7 @@ plugins {
     id("org.springframework.boot") version "3.1.1" apply false
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 allprojects{
     group = "dev.notypie"
@@ -18,26 +16,6 @@ allprojects{
 
     repositories {
         mavenCentral()
-    }
-
-}
-
-subprojects{
-
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-
-    dependencies {
-        //Kotlin Reflection
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-//        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-        //Test implementation
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("io.projectreactor:reactor-test")
     }
 
     tasks.withType<JavaCompile>{
@@ -54,5 +32,23 @@ subprojects{
             freeCompilerArgs += "-Xjsr305=strict"
             jvmTarget = "17"
         }
+    }
+}
+
+subprojects{
+
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    dependencies {
+        //Kotlin Reflection
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+        //Test implementation
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("io.projectreactor:reactor-test")
     }
 }

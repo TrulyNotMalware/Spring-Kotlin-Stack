@@ -12,7 +12,7 @@ import java.security.UnrecoverableKeyException
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 
-@Configuration //Require All-Open
+@Configuration//Require All-Open
 @Profile("jwt")
 class JwtConfiguration(
     @Value("\${jwt.token.keystore.classpath}") private val keyStorePath: String,
