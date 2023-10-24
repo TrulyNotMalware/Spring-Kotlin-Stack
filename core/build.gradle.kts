@@ -7,10 +7,6 @@ val bootJar: BootJar by tasks
 jar.enabled = true
 bootJar.enabled = false
 
-plugins{
-    kotlin("plugin.jpa") version "1.9.10"
-}
-
 dependencies{
     //JPA
     api("org.springframework.boot:spring-boot-starter-data-jpa")
