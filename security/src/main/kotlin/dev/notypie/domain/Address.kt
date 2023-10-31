@@ -21,5 +21,7 @@ class Address(
     @JsonProperty("zip_code")
     private val zipCode: String?
 ) {
-    val log = logger()
+    companion object{
+        private val log = logger()
+    }
 }

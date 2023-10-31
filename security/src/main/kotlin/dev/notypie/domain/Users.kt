@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 
-@DiscriminatorColumn(name = "DTYPE")
 @SequenceGenerator(
     name = "USER_SQ_GENERATOR",
     sequenceName = "USER_SEQ",

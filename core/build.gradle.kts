@@ -24,4 +24,7 @@ dependencies{
     implementation ("com.oracle.database.security:osdt_cert")
     //Include Hateoas
     api("org.springframework.hateoas:spring-hateoas")
+
+    //Spring boot test.
+    testFixturesApi("org.springframework.boot:spring-boot-starter-test")
 }
