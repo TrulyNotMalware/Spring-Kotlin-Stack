@@ -9,7 +9,9 @@ bootJar.enabled = false
 
 dependencies {
     api(project(":core"))
+    testImplementation(testFixtures(project(":core")))
     api(project(":common"))
+    testImplementation(testFixtures(project(":common")))
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     //Random UUID Generator
@@ -26,4 +28,12 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testFixturesApi("org.springframework.security:spring-security-test")
+}
+//Jpa - Lazy fetch
+allOpen{
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.MappedSuperclass")
 }

@@ -8,12 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import java.util.*
 
 class JwtDto(
-    @JsonProperty("access_token") private val accessToken: String,
+    @JsonProperty("access_token") val accessToken: String,
 
-    @JsonProperty("refresh_token") private val refreshToken: String,
+    @JsonProperty("refresh_token") val refreshToken: String,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
-    private val accessTokenExpiredDate: Date? = null
+    val accessTokenExpiredDate: Date? = null
 ) {
 }

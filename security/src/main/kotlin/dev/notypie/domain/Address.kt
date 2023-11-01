@@ -7,21 +7,29 @@ import jakarta.persistence.Embeddable
 @Embeddable
 class Address(
     @JsonProperty("country")
-    private val country: String?,
+    private var country: String? = null,
 
     @JsonProperty("street_address")
-    private val streetAddress: String?,
+    private var streetAddress: String? = null,
 
     @JsonProperty("city")
-    private val city: String?,
+    private var city: String? = null,
 
     @JsonProperty("region")
-    private val region: String?,
+    private var region: String? = null,
 
     @JsonProperty("zip_code")
-    private val zipCode: String?
+    private var zipCode: String? = null
 ) {
     companion object{
         private val log = logger()
+    }
+
+    internal fun update(address: Address){
+        this.country = address.country
+        this.streetAddress = address.streetAddress
+        this.city = address.city
+        this.region = address.region
+        this.zipCode = address.zipCode
     }
 }

@@ -1,5 +1,6 @@
 package dev.notypie.application
 
+import dev.notypie.domain.Users
 import dev.notypie.jwt.dto.JwtDto
 import org.springframework.http.ResponseCookie
 

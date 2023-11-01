@@ -11,7 +11,9 @@ plugins {
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
-
+val mockkVersion = "1.13.8"
+val kotestVersion = "5.7.2"
+val kotestSpringExtensionVersion = "1.1.3"
 allprojects{
     group = "dev.notypie"
     version = "0.0.1-SNAPSHOT"
@@ -56,5 +58,10 @@ subprojects{
         //Test implementation
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("io.projectreactor:reactor-test")
+        //Kotest + MockK
+        testImplementation("io.kotest:kotest-runner-junit5-jvm:${kotestVersion}")
+        testImplementation("io.kotest.extensions:kotest-extensions-spring:${kotestSpringExtensionVersion}")
+        testImplementation("io.kotest:kotest-assertions-core-jvm:${kotestVersion}")
+        testImplementation("io.mockk:mockk:${mockkVersion}")
     }
 }

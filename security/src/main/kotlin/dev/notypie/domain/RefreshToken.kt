@@ -14,17 +14,18 @@ import java.time.LocalDateTime
 class RefreshToken (
     @JsonProperty("refreshToken")
     @Column(name = "refresh_token", length = 500)
-    private var refreshToken: String?,
+    private var refreshToken: String? = null,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     @JsonProperty("refresh_authenticated_at")
-    private var refreshAuthenticatedAt: LocalDateTime?,
+    private var refreshAuthenticatedAt: LocalDateTime? = null,
 ){
 
-    fun update(refreshToken: String){
+    internal fun update(refreshToken: String?){
         this.refreshToken = refreshToken
         this.refreshAuthenticatedAt = LocalDateTime.now()
     }
 
+    internal fun getRefreshToken() = this.refreshToken
 }

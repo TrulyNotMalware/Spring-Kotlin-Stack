@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestPropertySource(properties = ["spring.config.location = classpath:application-test.yaml"])
-class SpringMockTest (
-    @Autowired val mockMvc: MockMvc
-)
+open class SpringMockTest{
+    @Autowired
+    lateinit var mockMvc: MockMvc
+}

@@ -61,7 +61,8 @@ class JwtTokenProvider(
         }catch (e: Exception) {
             when(e){
                 is ExpiredJwtException -> {
-                    this.log.error("Token Expried.")
+                    this.log.error("Token Expired.")
+                    return e.claims
                 }
             }
             e.printStackTrace()
@@ -101,8 +102,9 @@ class JwtTokenProvider(
         }
     }
 
-    fun equalRefreshTokenId(refreshTokenId: String, refreshToken: String): Boolean {
-        val compareToken = getClaimsFromJwtToken(refreshToken)["value"].toString()
-        return refreshTokenId == compareToken
+    fun equalRefreshTokenId(findRefreshToken: String, refreshToken: String): Boolean {
+        val refreshTokenId = this.getClaimsFromJwtToken(findRefreshToken)["value"].toString()
+        val compareTokenId = getClaimsFromJwtToken(refreshToken)["value"].toString()
+        return refreshTokenId == compareTokenId
     }
 }

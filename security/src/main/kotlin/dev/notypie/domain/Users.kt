@@ -1,5 +1,6 @@
 package dev.notypie.domain
 
+import dev.notypie.constants.Constants
 import dev.notypie.jwt.dto.UserDto
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
@@ -18,23 +19,24 @@ import org.springframework.security.core.userdetails.UserDetails
 @Entity(name = "users")
 class Users (
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ") @Column(name = "id")
-    private val id: Long,
+    val id: Long = 0L,
 
     @Column(name = "user_id", unique = true)
-    private val userId: @NotBlank(message = "User id must required.") @Pattern(regexp = "[a-zA-Z0-9_-]*$") String,
+    val userId: @NotBlank(message = "User id must required.") @Pattern(regexp = "[a-zA-Z0-9_-]*$") String,
 
     @Column(name = "user_name")
     private var userName: @NotBlank(message = "User name must required.") @Pattern(regexp = "^[a-zA-Z0-9 _-]*$") String,
 
     @Column(name = "email")
-    private var email: @Email String,
+    private val email: @Email String,
 
     //10.19 Add role
     @Column(name = "role")
-    private var role: String,
+    private var role: String = Constants.USER_ROLE_DEFAULT,
 
+    //If Password is null, it means is OAuthUser.
     @Column(name = "password")
-    private val password: @NotBlank String,
+    val password: @NotBlank String = "OAuthUser",
 
     @Column(name = "phone_number")
     private var phoneNumber: @Pattern(
@@ -42,35 +44,34 @@ class Users (
         message = "incorrect phone number format."
     ) String,
 
+    @Embedded
+    //@Embedded class objects can be null when all properties are null.
+    private var address: Address? = Address(
+        country = null,
+        city = null,
+        streetAddress = null,
+        region = null,
+        zipCode = null
+    ),
+
+    @Embedded
+    //@Embedded class objects can be null when all properties are null.
+    private var refreshToken: RefreshToken? = RefreshToken(
+        refreshToken = null, refreshAuthenticatedAt = null
+    ),
+
     @Column(insertable = false, updatable = false)
     var dtype: String,
 
-    //Address
-    country: String,
-    streetAddress: String,
-    city: String,
-    region: String,
-    zipCode: String
-){
-
-    @Embedded
-    private var address: Address = Address(
-        country = country,
-        city = city,
-        streetAddress = streetAddress,
-        region = region,
-        zipCode = zipCode
-    )
-
-    @Embedded
-    private val refreshToken: RefreshToken = RefreshToken(
-        refreshToken = null, refreshAuthenticatedAt = null
-    )
+    ){
 
     fun updateUsers(updateInfo: Users): Users {
-        if (userName != updateInfo.userName) userName = updateInfo.userName
-        if (email != updateInfo.email) email = updateInfo.email
-        if (address != updateInfo.address) address = updateInfo.address
+        if(this.address == null) this.address = Address() // Null Check.
+        if (this.userName != updateInfo.userName) this.userName = updateInfo.userName
+        // Now email is cannot update.
+//        if (email != updateInfo.email) email = updateInfo.email
+        if(updateInfo.refreshToken == null ) return this
+        if (this.address != updateInfo.address) this.address!!.update(updateInfo.address!!) // Never become null.
         return this
     }
 
@@ -80,17 +81,20 @@ class Users (
         return User(id.toString(), password, authorities)
     }
 
-    fun toUserDto(): UserDto {
-        return UserDto(
+    fun toUserDto(): UserDto = UserDto(
             id = id,
             userId = userId,
             email = email,
             dtype = dtype
         )
-    }
 
-    fun updateRefreshToken(newRefreshToken: String): Users {
-        refreshToken.update(newRefreshToken)
+
+    fun updateRefreshToken(newRefreshToken: String?): Users {
+        if(this.refreshToken == null) this.refreshToken = RefreshToken()
+        this.refreshToken!!.update(newRefreshToken)
         return this
     }
+    //FIXME this functions is correct?
+    fun getRefreshToken(): String? = this.refreshToken?.getRefreshToken()
+    fun getRole(): String = this.role
 }

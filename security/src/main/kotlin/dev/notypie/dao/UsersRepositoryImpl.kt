@@ -1,6 +1,9 @@
 package dev.notypie.dao
 
 import dev.notypie.domain.Users
+import dev.notypie.exceptions.UserDomainException
+import dev.notypie.exceptions.UserErrorCodeImpl
+import dev.notypie.global.error.ArgumentError
 import dev.notypie.jwt.utils.logger
 import org.springframework.stereotype.Service
 import java.util.*
@@ -10,32 +13,34 @@ class UsersRepositoryImpl (
     private val userRepository: UserRepository
 ): UsersRepository {
     private val log = logger()
-    override fun findById(id: Long): Optional<Users> {
-        return this.userRepository.findById(id);
-    }
+    override fun findById(id: Long): Optional<Users> = this.userRepository.findById(id);
+
 
     override fun findByIdWithException(id: Long): Users {
-        return this.userRepository.findById(id).orElseThrow { RuntimeException("userNotFound") }
+        val errors: ArrayList<ArgumentError> = arrayListOf()
+        errors.add(ArgumentError("id",id.toString(),"id not found in repository."))
+        return this.userRepository.findById(id).orElseThrow { UserDomainException(UserErrorCodeImpl.USER_NOT_FOUND, errors) }
     }
 
     override fun findByUserIdWithException(userId: String): Users {
-        return this.userRepository.findByUserId(userId).orElseThrow { java.lang.RuntimeException("userNotFound") }
+        val errors: ArrayList<ArgumentError> = arrayListOf()
+        errors.add(ArgumentError("User Id",userId,"User id not found in repository."))
+        return this.userRepository.findByUserId(userId).orElseThrow { UserDomainException(UserErrorCodeImpl.USER_NOT_FOUND, errors) }
     }
 
-    override fun save(users: Users): Users {
-        return this.userRepository.save(users)
-    }
+    override fun save(users: Users): Users = this.userRepository.save(users)
 
-    override fun updateRefreshToken(id: Long, refreshToken: String): Users {
-        TODO("Not yet implemented")
-    }
+    override fun updateRefreshToken(id: Long, refreshToken: String?): Users
+    = this.userRepository.save(this.findByIdWithException(id).updateRefreshToken(refreshToken))
 
-    override fun findRefreshTokenById(id: Long): String {
-        TODO("Not yet implemented")
-    }
+    override fun findRefreshTokenById(id: Long): String? = this.findByIdWithException(id).getRefreshToken()
 
     override fun saveOrUpdateByUserId(users: Users): Users {
-        TODO("Not yet implemented")
+        log.info("Users : {}",users)
+        this.userRepository.findByUserId(users.userId)
+            .map { findUser -> findUser.updateUsers(users) }
+            .orElse(users)
+        return this.userRepository.save(users)
     }
 
 }
