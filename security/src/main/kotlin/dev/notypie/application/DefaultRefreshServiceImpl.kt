@@ -26,7 +26,7 @@ class DefaultRefreshServiceImpl(
     private val cookieProvider: CookieProvider
     ): RefreshTokenService {
     private val log = logger()
-    override fun updateRefreshToken(id: Long, refreshToken: String){
+    override fun updateRefreshToken(id: Long, refreshToken: String?){
         this.repository.updateRefreshToken(id, refreshToken)
     }
 

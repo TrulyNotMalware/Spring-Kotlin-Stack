@@ -42,7 +42,7 @@ class Users (
     private var phoneNumber: @Pattern(
         regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$",
         message = "incorrect phone number format."
-    ) String,
+    ) String? = null,
 
     @Embedded
     //@Embedded class objects can be null when all properties are null.
@@ -61,7 +61,7 @@ class Users (
     ),
 
     @Column(insertable = false, updatable = false)
-    var dtype: String,
+    var dtype: String = "user",
 
     ){
 
@@ -90,6 +90,7 @@ class Users (
 
 
     fun updateRefreshToken(newRefreshToken: String?): Users {
+//        this.refreshToken.let {  }
         if(this.refreshToken == null) this.refreshToken = RefreshToken()
         this.refreshToken!!.update(newRefreshToken)
         return this
