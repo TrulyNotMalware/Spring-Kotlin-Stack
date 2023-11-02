@@ -1,16 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
     id("java-library")
     id("java-test-fixtures")
     id("io.spring.dependency-management") version "1.1.3"
-    kotlin("plugin.spring") version "1.9.10" apply false
-    kotlin("plugin.jpa") version "1.9.10" apply false
-    id("org.springframework.boot") version "3.1.1" apply false
+    kotlin("plugin.spring") version "1.9.20" apply false
+    kotlin("plugin.jpa") version "1.9.20" apply false
+    id("org.springframework.boot") version "3.1.4" apply false
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 val mockkVersion = "1.13.8"
 val kotestVersion = "5.7.2"
 val kotestSpringExtensionVersion = "1.1.3"
@@ -23,8 +23,8 @@ allprojects{
     }
 
     tasks.withType<JavaCompile>{
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
     }
 
     tasks.withType<Test> {
@@ -34,7 +34,7 @@ allprojects{
     tasks.withType<KotlinCompile> {
         kotlinOptions{
             freeCompilerArgs += "-Xjsr305=strict"
-            jvmTarget = "17"
+            jvmTarget = "21"
         }
     }
 }
