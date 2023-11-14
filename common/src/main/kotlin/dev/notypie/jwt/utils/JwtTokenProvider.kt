@@ -66,7 +66,7 @@ class JwtTokenProvider(
                 }
             }
             e.printStackTrace()
-            throw RuntimeException()
+            throw e
         }
     }
 

@@ -1,5 +1,6 @@
 package dev.notypie.application
 
+import dev.notypie.base.annotations.SpringMockTest
 import dev.notypie.builders.MockUserBuilders
 import dev.notypie.dao.UsersRepository
 import dev.notypie.domain.Users
@@ -13,19 +14,14 @@ import io.kotest.matchers.equals.shouldNotBeEqual
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
-import org.springframework.transaction.annotation.Transactional
 
 //FIXME Change all of this to one annotation.
-@Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@SpringMockTest
 @ActiveProfiles("test","jwt")
 @TestPropertySource(properties = ["spring.config.location = classpath:application-expired-test.yaml"])
 class ExpiredRefreshTokenServiceTest @Autowired constructor(
