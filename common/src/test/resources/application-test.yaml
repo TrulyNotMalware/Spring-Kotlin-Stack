@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    group:
+      "jwt": "jwt-configuration"
+---
+spring:
+  config:
+    activate:
+      on-profile: "jwt-configuration"
+
+jwt:
+  token:
+    accessTokenExpiredTime: 200000
+    refreshTokenExpiredTime: 2000000
+    keystore:
+      classpath: testkeystore.jks
+      password: teststorepass
+    key:
+      alias: client
+      privateKeyPassPhrase: teststorepass
+
+authentication:
+  login:
+    requestUrl: "/api/auth/login"
+  logout:
+    requestUrl: "/api/auth/user/logout"

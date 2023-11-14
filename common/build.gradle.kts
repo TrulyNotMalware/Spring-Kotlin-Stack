@@ -11,6 +11,7 @@ bootJar.enabled = false
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework:spring-web")
+    testImplementation(testFixtures(project(":core")))
 
     //Jwt Token
     api("io.jsonwebtoken:jjwt-api:0.11.5")
