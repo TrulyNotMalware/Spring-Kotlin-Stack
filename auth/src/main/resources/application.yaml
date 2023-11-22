@@ -1,0 +1,261 @@
+spring:
+  profiles:
+    group:
+      "prod": "prod-base, hikari-prod-config, prod-oracle-database"
+      "dev": "default-base, hikari-default-config, dev-oracle-database"
+      "local": "default-base, hikari-default-config, h2-local-database"
+      "jwt": "jwt-configuration"
+      "oauth-client": "oauth"
+    active: local, jwt, oauth-client
+---
+server:
+  port: 8888
+  servlet:
+    session:
+      timeout: 5000
+spring:
+  config:
+    activate:
+      on-profile: "default-base"
+
+  jpa:
+    hibernate:
+      naming: # camelCase -> under_score_case, '.' -> '_', UPPER_CASE is not allowed. changed to lower_case
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false #About Lazy fetch
+
+management:
+  endpoint:
+    logfile:
+      external-file: ~/logback.log
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,loggers,metrics,mappings,threaddump,conditions,info,heapdump
+      base-path: /api/actuator
+      path-mapping:
+        loggers: logs
+        httptrace: trace
+info:
+  spring:
+    framework:
+      version: ${spring-framework.version}
+  java:
+    version: ${java.version}
+#logging:
+#  level:
+#    root: trace
+---
+server:
+  port: 80
+  servlet:
+    session:
+      timeout: ${SERVLET_SESSION_TIMEOUT}
+spring:
+  config:
+    activate:
+      on-profile: "prod-base"
+  devtools:
+    restart:
+      exclude: static/**, public/**, resources/**
+  jpa:
+    hibernate:
+      naming: # camelCase -> under_score_case, '.' -> '_', UPPER_CASE is not allowed. changed to lower_case
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: true #About Lazy fetch
+
+#Actuator
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+  endpoints:
+    web:
+      exposure:
+        include: health,loggers,metrics,mappings,threaddump,conditions,info,heapdump
+      base-path: /api/actuator
+      path-mapping:
+        loggers: logs
+        httptrace: trace
+info:
+  spring:
+    framework:
+      version: ${spring-framework.version}
+  java:
+    version: ${java.version}
+---
+spring:
+  config:
+    activate:
+      on-profile: hikari-prod-config
+  datasource:
+    hikari:
+      transaction-isolation: ${SQL_PROD_ISOLATION_LEVEL}
+      maximum-pool-size: 10
+      minimum-idle: 10
+      connection-timeout: ${SQL_PROD_CONNECTION_TIMEOUT}
+      validation-timeout: ${SQL_PROD_VALIDATION_TIMEOUT}
+      connection-test-query: ${SQL_PROD_TEST_QUERY}
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      pool-name: hikari_pool
+---
+spring:
+  config:
+    activate:
+      on-profile: hikari-default-config
+  datasource:
+    hikari:
+      transaction-isolation: TRANSACTION_REPEATABLE_READ
+      maximum-pool-size: 10
+      minimum-idle: 10
+      connection-timeout: 5000
+      validation-timeout: 3000
+      connection-test-query: SELECT 1
+      idle-timeout: 60000
+      max-lifetime: 1800000
+      pool-name: default_hikari_pool
+---
+spring:
+  config:
+    activate:
+      on-profile: prod-oracle-database
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@${TNS_NAME}?TNS_ADMIN=${ORACLE_WALLET_DIRECTORY}
+    username: ${ORACLE_USER_NAME}
+    password: ${ORACLE_DB_PASSWORD}
+
+    hikari:
+      connection-test-query: SELECT 1 FROM DUAL # Oracle Database Connection Query.
+      transaction-isolation: TRANSACTION_READ_COMMITTED # READ_COMMITTED and SERIALIZABLE are the only valid transaction levels ( Oracle )
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true #Show Beautify sql2
+    database: ORACLE
+    database-platform: org.hibernate.dialect.OracleDialect
+  h2: # Disable Local h2 database.
+    console:
+      enabled: false
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+---
+# Develop SQL - Oracle Database 19c
+spring:
+  config:
+    activate:
+      on-profile: "dev-oracle-database"
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@${DEV_TNS_NAME}?TNS_ADMIN=${DEV_ORACLE_WALLET_DIRECTORY}
+    username: ${DEV_ORACLE_USER_NAME}
+    password: ${DEV_ORACLE_DB_PASSWORD}
+    hikari:
+      connection-test-query: SELECT 1 FROM DUAL # Oracle Database Connection Query.
+      transaction-isolation: TRANSACTION_READ_COMMITTED # READ_COMMITTED and SERIALIZABLE are the only valid transaction levels ( Oracle )
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true #Show Beautify sql2
+    database: ORACLE
+    database-platform: org.hibernate.dialect.OracleDialect
+  h2: # Disable Local h2 database.
+    console:
+      enabled: false
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+---
+spring:
+  config:
+    activate:
+      on-profile: "h2-local-database"
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MariaDB;DATABASE_TO_LOWER=TRUE
+    jdbcUrl: jdbc:h2:mem:test;MODE=MariaDB;DATABASE_TO_LOWER=TRUE
+    username: admin
+    password: admin
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: h2
+  sql:
+    init:
+      mode: embedded
+---
+spring:
+  config:
+    activate:
+      on-profile: "jwt-configuration"
+
+jwt:
+  token:
+    accessTokenExpiredTime: ${ACCESS_EXPIRED_TIME}
+    refreshTokenExpiredTime: ${REFRESH_EXPIRED_TIME}
+    keystore:
+      classpath: ${KEY_NAME}
+      password: ${KEYSTORE_PASSWORD}
+    key:
+      alias: ${KEY_ALIAS}
+      privateKeyPassPhrase: ${PRIVATE_KEY_PASS_PHRASE}
+
+authentication:
+  login:
+    requestUrl: "/api/auth/login"
+  logout:
+    requestUrl: "/api/auth/user/logout"
+---
+spring:
+  config:
+    activate:
+      on-profile: "oauth"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: GITHUB_CLIENT_ID
+            client-secret: GITHUB_SECRET
+            scope: name, email, avatar_url
+          myService:
+            client-id: a5d84fa4672d11eebde4f1e330a208a0
+            client-secret: "JL8nj68LprFvT3oCOAeHW26OTAP9dk"
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope: message.read, message.write
+            client-authentication-method: client_secret_basic
+        #            client-authentication-method: client_secret_post
+        provider:
+          myService:
+            authorization-uri: https://auth.notypie.dev/oauth2/authorize
+            token-uri: https://auth.notypie.dev/oauth2/token
+            user-info-uri: https://api.notypie.dev/v1/users/me
+            user-name-attribute: userId

@@ -63,5 +63,8 @@ subprojects{
         testImplementation("io.kotest.extensions:kotest-extensions-spring:${kotestSpringExtensionVersion}")
         testImplementation("io.kotest:kotest-assertions-core-jvm:${kotestVersion}")
         testImplementation("io.mockk:mockk:${mockkVersion}")
+
+        //Spring @MockkBean & @SpykBean implementation
+        testImplementation("com.ninja-squad:springmockk:4.0.2")
     }
 }
