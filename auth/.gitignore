@@ -41,3 +41,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Oracle Wallet ###
+src/main/resources/Wallet/
+src/main/resources/*.jks
+
+### test files ###
+#src/test/resources/*.jks

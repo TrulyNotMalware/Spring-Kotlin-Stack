@@ -1,13 +1,13 @@
 package dev.notypie.base.annotations
 
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
-
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@DataJpaTest
+@ExtendWith(SpringExtension::class)
 @ActiveProfiles("test")
 @TestPropertySource(properties = ["spring.config.location = classpath:application-test.yaml"])
-annotation class JpaDaoTest
+annotation class ControllerTest
