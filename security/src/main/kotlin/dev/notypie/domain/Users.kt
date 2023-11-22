@@ -28,7 +28,7 @@ class Users (
     private var userName: @NotBlank(message = "User name must required.") @Pattern(regexp = "^[a-zA-Z0-9 _-]*$") String,
 
     @Column(name = "email")
-    private val email: @Email String,
+    val email: @Email String,
 
     //10.19 Add role
     @Column(name = "role")

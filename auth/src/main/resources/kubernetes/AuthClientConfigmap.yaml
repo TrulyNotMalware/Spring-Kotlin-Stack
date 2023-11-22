@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-auth-server-configmap
+  namespace: api-service
+data:
+  SERVLET_SESSION_TIMEOUT: "SERVLET_SESSION_TIMEOUT"
