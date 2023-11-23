@@ -12,13 +12,13 @@ import java.time.LocalDateTime
 
 @Embeddable
 class RefreshToken (
-    @JsonProperty("refreshToken")
+    @field:JsonProperty("refreshToken")
     @Column(name = "refresh_token", length = 500)
     private var refreshToken: String? = null,
 
-    @JsonSerialize(using = LocalDateTimeSerializer::class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
-    @JsonProperty("refresh_authenticated_at")
+    @field:JsonSerialize(using = LocalDateTimeSerializer::class)
+    @field:JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    @Column(name = "refresh_authenticated_at")
     private var refreshAuthenticatedAt: LocalDateTime? = null,
 ){
 

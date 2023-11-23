@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotBlank
 
 
 class LoginRequestDto (
-    @JsonProperty("userId")
-    val userId: @NotBlank String,
+    @field:JsonProperty("userId")
+    @field:NotBlank
+    val userId: String,
 
-    @JsonProperty("password")
-    val password: @NotBlank String
+    @field:JsonProperty("password")
+    @field:NotBlank
+    val password: String
 ){
 
 }
