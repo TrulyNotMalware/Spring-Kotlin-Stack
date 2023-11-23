@@ -22,13 +22,18 @@ class Users (
     val id: Long = 0L,
 
     @Column(name = "user_id", unique = true)
-    val userId: @NotBlank(message = "User id must required.") @Pattern(regexp = "[a-zA-Z0-9_-]*$") String,
+    @field:NotBlank(message = "User id must required.")
+    @field:Pattern(regexp = "[a-zA-Z0-9_-]*$")
+    val userId: String,
 
     @Column(name = "user_name")
-    private var userName: @NotBlank(message = "User name must required.") @Pattern(regexp = "^[a-zA-Z0-9 _-]*$") String,
+    @field:NotBlank(message = "User name must required.")
+    @field:Pattern(regexp = "^[a-zA-Z0-9 _-]*$")
+    private var userName: String,
 
     @Column(name = "email")
-    val email: @Email String,
+    @field:Email
+    val email: String,
 
     //10.19 Add role
     @Column(name = "role")
@@ -36,13 +41,15 @@ class Users (
 
     //If Password is null, it means is OAuthUser.
     @Column(name = "password")
-    val password: @NotBlank String = "OAuthUser",
+    @field:NotBlank
+    val password: String = "OAuthUser",
 
     @Column(name = "phone_number")
-    private var phoneNumber: @Pattern(
+    @field:Pattern(
         regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$",
         message = "incorrect phone number format."
-    ) String? = null,
+    )
+    private var phoneNumber: String? = null,
 
     @Embedded
     //@Embedded class objects can be null when all properties are null.

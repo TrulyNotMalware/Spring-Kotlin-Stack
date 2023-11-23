@@ -6,19 +6,19 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 class Address(
-    @JsonProperty("country")
+    @field:JsonProperty("country")
     private var country: String? = null,
 
-    @JsonProperty("street_address")
+    @field:JsonProperty("street_address")
     private var streetAddress: String? = null,
 
-    @JsonProperty("city")
+    @field:JsonProperty("city")
     private var city: String? = null,
 
-    @JsonProperty("region")
+    @field:JsonProperty("region")
     private var region: String? = null,
 
-    @JsonProperty("zip_code")
+    @field:JsonProperty("zip_code")
     private var zipCode: String? = null
 ) {
     companion object{
