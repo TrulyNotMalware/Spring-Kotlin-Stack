@@ -13,7 +13,7 @@ class UsersRepositoryImpl (
     private val userRepository: UserRepository
 ): UsersRepository {
     private val log = logger()
-    override fun findById(id: Long): Optional<Users> = this.userRepository.findById(id);
+    override fun findById(id: Long): Optional<Users> = this.userRepository.findById(id)
 
 
     override fun findByIdWithException(id: Long): Users {
