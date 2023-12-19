@@ -53,6 +53,27 @@ class MockUserBuilders (
         dtype = "testDtype"
     )
 
+    fun createDefaultUsers(userId: String): Users
+            = Users(
+        userId = userId,
+        userName = this.userName,
+        email = this.email,
+        password = this.password,
+        phoneNumber = this.phoneNumber,
+        address = Address(
+            country = this.country,
+            streetAddress = this.streetAddress,
+            city = this.city,
+            region = this.region,
+            zipCode = this.zipCode
+        ),
+        refreshToken = RefreshToken(
+            refreshToken = null,
+            refreshAuthenticatedAt = null
+        ),
+        dtype = "testDtype"
+    )
+
     fun exchange(target: Users) : LoginRequestDto
     = LoginRequestDto(
         userId = target.userId,
