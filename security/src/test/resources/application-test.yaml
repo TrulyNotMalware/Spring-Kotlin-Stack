@@ -1,0 +1,65 @@
+spring:
+  profiles:
+    group:
+      "test": "h2-local-database"
+      "jwt": "jwt-configuration"
+---
+spring:
+  config:
+    activate:
+      on-profile: "h2-local-database"
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=Oracle;DATABASE_TO_LOWER=TRUE
+    jdbcUrl: jdbc:h2:mem:test;MODE=Oracle;DATABASE_TO_LOWER=TRUE
+    username: admin
+    password: admin
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: h2
+  sql:
+    init:
+      mode: embedded
+---
+spring:
+  config:
+    activate:
+      on-profile: "jwt-configuration"
+
+jwt:
+  token:
+    accessTokenExpiredTime: 200000
+    refreshTokenExpiredTime: 2000000
+    keystore:
+      classpath: testkeystore.jks
+      password: teststorepass
+    key:
+      alias: client
+      privateKeyPassPhrase: teststorepass
+
+authentication:
+  login:
+    requestUrl: "/api/auth/login"
+  logout:
+    requestUrl: "/api/auth/user/logout"
+---
+# immediately expire jwt access token.
+spring:
+  config:
+    activate:
+      on-profile: "expired-jwt"
+
+jwt:
+  token:
+    accessTokenExpiredTime: 1
+    refreshTokenExpiredTime: 2000000
+    keystore:
+      classpath: testkeystore.jks
+      password: teststorepass
+    key:
+      alias: client
+      privateKeyPassPhrase: teststorepass
