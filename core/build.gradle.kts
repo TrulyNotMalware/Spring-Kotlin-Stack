@@ -20,8 +20,8 @@ dependencies{
     runtimeOnly("com.oracle.database.jdbc:ojdbc8")
     implementation("com.oracle.database.jdbc:ucp")
     implementation("com.oracle.database.security:oraclepki")
-    implementation ("com.oracle.database.security:osdt_core")
-    implementation ("com.oracle.database.security:osdt_cert")
+    implementation ("com.oracle.database.security:osdt_core:21.11.0.0")
+    implementation ("com.oracle.database.security:osdt_cert:21.11.0.0")
     //Include Hateoas
     api("org.springframework.hateoas:spring-hateoas")
 
