@@ -12,6 +12,10 @@ dependencies{
     api("org.springframework.boot:spring-boot-starter-data-jpa")
     api("org.springframework.boot:spring-boot-starter-validation")
 
+    //Caffeine cache manager.
+    api("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.github.ben-manes.caffeine:caffeine")
+
     //Dev Database - Mysql
     runtimeOnly("com.h2database:h2")
     runtimeOnly("mysql:mysql-connector-java:8.0.30")
@@ -20,8 +24,8 @@ dependencies{
     runtimeOnly("com.oracle.database.jdbc:ojdbc8")
     implementation("com.oracle.database.jdbc:ucp")
     implementation("com.oracle.database.security:oraclepki")
-    implementation ("com.oracle.database.security:osdt_core")
-    implementation ("com.oracle.database.security:osdt_cert")
+    implementation ("com.oracle.database.security:osdt_core:21.11.0.0")
+    implementation ("com.oracle.database.security:osdt_cert:21.11.0.0")
     //Include Hateoas
     api("org.springframework.hateoas:spring-hateoas")
 

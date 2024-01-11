@@ -58,7 +58,25 @@ class UserDaoTest @Autowired constructor(
         }
         //FIXME Add Test code
         `when`("update refresh token"){
+            val newRefreshTokenValue = "I AM UPDATED!"
+            val selected: Users = domainRepository.findByUserIdWithException(user.userId)
+            selected.updateRefreshToken(newRefreshTokenValue)
+            domainRepository.save(selected)
+            val afterChanged: Users = domainRepository.findByUserIdWithException(user.userId)
 
+            val newUser = mockBuilder.createDefaultUsers("helloNewUser")
+            user.updateRefreshToken(newRefreshTokenValue)
+            val updateUser = domainRepository.saveOrUpdateByUserId(user)
+            val insertedUser = domainRepository.saveOrUpdateByUserId(newUser)
+
+            then("Successfully update"){
+                afterChanged.getRefreshToken() shouldBe newRefreshTokenValue
+            }
+
+            then("update or save successfully work"){
+                updateUser.getRefreshToken() shouldBe newRefreshTokenValue
+                insertedUser.userId shouldBe newUser.userId
+            }
         }
 
     }

@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.21"
     id("java-library")
     id("java-test-fixtures")
-    id("io.spring.dependency-management") version "1.1.3"
-    kotlin("plugin.spring") version "1.9.20" apply false
-    kotlin("plugin.jpa") version "1.9.20" apply false
-    id("org.springframework.boot") version "3.1.4" apply false
+    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("plugin.spring") version "1.9.21" apply false
+    kotlin("plugin.jpa") version "1.9.21" apply false
+    id("org.springframework.boot") version "3.2.0" apply false
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_21
