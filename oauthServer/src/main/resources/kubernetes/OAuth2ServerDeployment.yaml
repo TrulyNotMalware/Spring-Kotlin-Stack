@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-oauth-auth-server
+  namespace: api-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-oauth-auth-server
+  template:
+    metadata:
+      labels:
+        app: api-oauth-auth-server
+    spec:
+      containers:
+        - name: api-oauth-auth-server
+          image: harbor.registry.notypie.dev/apis/oauth-server:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef: # implementation project (":common")
+                name: api-common-secret
+            - secretRef: # implementation project (":core")
+                name: api-oracle-database-secret # Example: use Oracle database.
+            - configMapRef:
+                name: api-oauth-server-configmap
+          volumeMounts:
+            - mountPath: "YOUR_VOLUME_MOUNT_PATH"
+              name: oracle-wallet
+              readOnly: true
+          ports:
+            - name: http
+              containerPort: 80
+      volumes: # This is also example for Oracle.
+        - name: oracle-wallet
+          secret:
+            secretName: oracle-wallet-config
