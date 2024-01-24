@@ -14,6 +14,7 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 val mockkVersion = "1.13.8"
 val kotestVersion = "5.7.2"
 val kotestSpringExtensionVersion = "1.1.3"
+
 allprojects{
     group = "dev.notypie"
     version = "0.0.1-SNAPSHOT"
