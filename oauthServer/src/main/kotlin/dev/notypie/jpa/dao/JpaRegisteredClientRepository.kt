@@ -2,6 +2,7 @@ package dev.notypie.jpa.dao
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import dev.notypie.domain.Client
 import org.springframework.security.jackson2.SecurityJackson2Modules
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod
@@ -9,6 +10,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
 
 @Service
 class JpaRegisteredClientRepository(
@@ -48,26 +50,36 @@ class JpaRegisteredClientRepository(
         }
     }
     override fun save(registeredClient: RegisteredClient) {
-        TODO("Not yet implemented")
+        this.clientRepository.save(this.toEntity(registeredClient))
     }
 
     override fun findById(id: String): RegisteredClient {
         TODO("Not yet implemented")
+//        if(id.isBlank()) throw IllegalArgumentException("id cannot be empty")
+//        return this.clientRepository.findById(id).filter { it }
     }
 
     override fun findByClientId(clientId: String): RegisteredClient {
         TODO("Not yet implemented")
     }
 
-//    private fun toEntity(registeredClient: RegisteredClient): Client {
-//        val clientAuthenticationMethods: MutableList<String> = mutableListOf()
-//        registeredClient.clientAuthenticationMethods.forEach{ clientAuthenticationMethods.add(it.value) }
-//        val authorizationGrantType: MutableList<String> = mutableListOf()
-//        registeredClient.authorizationGrantTypes.forEach { authorizationGrantType.add(it.value) }
-//        return Client(id = registeredClient.id.toLong(),
-//            clientId = registeredClient.clientId, clientIdIssuedAt = registeredClient.clientIdIssuedAt,
-//            clientSecret = registeredClient.clientSecret)
-//    }
+    private fun toObject(client: Client): RegisteredClient{
+        TODO("Not yet implemented")
+    }
+
+    private fun toEntity(registeredClient: RegisteredClient): Client
+        = Client(id = registeredClient.id.toLong(), clientId = registeredClient.clientId,
+            clientIdIssuedAt = registeredClient.clientIdIssuedAt!!, clientSecret = registeredClient.clientSecret!!,
+            clientSecretExpiresAt = registeredClient.clientSecretExpiresAt!!, clientName = registeredClient.clientName,
+            clientAuthenticationMethods = StringUtils.collectionToCommaDelimitedString(registeredClient.clientAuthenticationMethods.map { it.value }),
+            authorizationGrantTypes = StringUtils.collectionToCommaDelimitedString(registeredClient.authorizationGrantTypes.map { it.value }),
+            redirectUris = StringUtils.collectionToCommaDelimitedString(registeredClient.redirectUris),
+            postLogoutRedirectUris = StringUtils.collectionToCommaDelimitedString(registeredClient.postLogoutRedirectUris),
+            scopes = StringUtils.collectionToCommaDelimitedString(registeredClient.scopes),
+            clientSettings = this.writeMap(registeredClient.clientSettings.settings),
+            tokenSettings = this.writeMap(registeredClient.tokenSettings.settings)
+        )
+
 
     private fun parseMap(data: String): Map<String, Any> {
         try {
