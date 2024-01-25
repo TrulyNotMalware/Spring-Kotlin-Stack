@@ -10,6 +10,5 @@ import java.util.Optional
 @Profile("jpa-oauth-server")
 interface ClientRepository: JpaRepository<Client, Long>{
 
-    fun findByClientId(clientId: String): Optional<Client>
-
+    fun findByClientId(clientId: String): Client?
 }

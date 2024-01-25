@@ -1,5 +1,6 @@
 package dev.notypie.domain
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.IdClass
@@ -15,6 +16,8 @@ class AuthorizationConsent(
     @field:Id
     val principalName: String,
 
+    @field:Column(length = 1000)
+    val authorities: String
 ) {
 
     class AuthorizationConsentId(

@@ -10,9 +10,6 @@ import java.util.*
 @Profile("jpa-oauth-server")
 interface AuthorizationConsentRepository : JpaRepository<AuthorizationConsent, AuthorizationConsent.AuthorizationConsentId>{
 
-    fun findByRegisteredClientIdAndPrincipalName(
-        registeredClientId: String,
-        principalName: String): Optional<AuthorizationConsent>
-
+    fun findByRegisteredClientIdAndPrincipalName(registeredClientId: String, principalName: String): AuthorizationConsent?
     fun deleteByRegisteredClientIdAndPrincipalName(registeredClientId: String, principalName: String)
 }

@@ -12,13 +12,13 @@ import java.util.*
 @Profile("jpa-oauth-server")
 interface AuthorizationRepository: JpaRepository<Authorization, String> {
 
-    fun findByState(state: String): Optional<Authorization>
-    fun findByAuthorizationCodeValue(authorizationCode: String): Optional<Authorization>
-    fun findByAccessTokenValue(accessToken: String): Optional<Authorization>
-    fun findByRefreshTokenValue(refreshToken: String): Optional<Authorization>
-    fun findByOidcIdTokenValue(idToken: String): Optional<Authorization>
-    fun findByUserCodeValue(userCode: String): Optional<Authorization>
-    fun findByDeviceCodeValue(deviceCode: String): Optional<Authorization>
+    fun findByState(state: String): Authorization?
+    fun findByAuthorizationCodeValue(authorizationCode: String): Authorization?
+    fun findByAccessTokenValue(accessToken: String): Authorization?
+    fun findByRefreshTokenValue(refreshToken: String): Authorization?
+    fun findByOidcIdTokenValue(idToken: String): Authorization?
+    fun findByUserCodeValue(userCode: String): Authorization?
+    fun findByDeviceCodeValue(deviceCode: String): Authorization?
 
     @Query(
         "select a from Authorization a where a.state = :token" +
@@ -30,5 +30,5 @@ interface AuthorizationRepository: JpaRepository<Authorization, String> {
                 " or a.deviceCodeValue = :token"
     )
     fun findByStateOrAuthorizationCodeValueOrAccessTokenValueOrRefreshTokenValueOrOidcIdTokenValueOrUserCodeValueOrDeviceCodeValue(
-        @Param("token") token: String): Optional<Authorization>
+        @Param("token") token: String): Authorization?
 }
