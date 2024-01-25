@@ -5,7 +5,6 @@ import org.springframework.security.oauth2.server.authorization.settings.Configu
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings
 import org.springframework.util.Assert
-import java.lang.Boolean
 import java.time.Duration
 import java.util.*
 import kotlin.Any
@@ -15,13 +14,13 @@ import kotlin.String
 
 
 class TokenSettingsSerializer {
-    private val tokenSettings: TokenSettings
+    val tokenSettings: TokenSettings
 
     constructor(tokenSettings: TokenSettings){
         this.tokenSettings = this.buildTokenSettings(tokenSettings.settings)
     }
 
-    constructor(setting: Map<String, String>){
+    constructor(setting: Map<String, Any>){
         this.tokenSettings = this.buildTokenSettings(setting)
     }
     /**
@@ -46,7 +45,7 @@ class TokenSettingsSerializer {
                 this.durationConverter(getSetting(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE, settings))
             ) //Others
             .reuseRefreshTokens(
-                Boolean.TRUE == getSetting<Any>(ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS, settings)
+                true == getSetting(ConfigurationSettingNames.Token.REUSE_REFRESH_TOKENS, settings)
             )
             .idTokenSignatureAlgorithm(
                 SignatureAlgorithm.from(
