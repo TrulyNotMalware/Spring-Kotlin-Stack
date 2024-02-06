@@ -21,7 +21,7 @@ interface AuthorizationRepository: JpaRepository<Authorization, String> {
     fun findByDeviceCodeValue(deviceCode: String): Authorization?
 
     @Query(
-        "select a from Authorization a where a.state = :token" +
+        "select a from authorization a where a.state = :token" +
                 " or a.authorizationCodeValue = :token" +
                 " or a.accessTokenValue = :token" +
                 " or a.refreshTokenValue = :token" +
