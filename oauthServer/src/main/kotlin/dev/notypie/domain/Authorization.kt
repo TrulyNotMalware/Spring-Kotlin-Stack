@@ -75,5 +75,4 @@ class Authorization(
 
     @field:Column(length = 2000)
     val deviceCodeMetadata: String?
-) {
-}
+)

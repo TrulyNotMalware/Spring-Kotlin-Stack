@@ -1,0 +1,28 @@
+spring:
+  config:
+    activate:
+      on-profile: "test"
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=Oracle;DATABASE_TO_LOWER=TRUE
+    jdbcUrl: jdbc:h2:mem:test;MODE=Oracle;DATABASE_TO_LOWER=TRUE
+    username: admin
+    password: admin
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: h2
+  sql:
+    init:
+      mode: embedded
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
